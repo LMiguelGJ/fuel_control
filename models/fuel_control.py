@@ -10,6 +10,8 @@ class FuelControl(models.Model):
 
     date = fields.Date(string='Fecha')
     
+    name = fields.Char(string='Referencia', required=True, copy=False, readonly=True, default='Nuevo')
+
     received_by = fields.Char(string="Recibido por")
     
     quantity_in = fields.Float(string='Cantidad Entrante', default=False)
@@ -19,22 +21,12 @@ class FuelControl(models.Model):
     total = fields.Float(string='Total Actual',
                          compute='_compute_total', store=True)
     
-    date_from = fields.Date(string='Desde')
-    date_to = fields.Date(string='Hasta')
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'Nuevo') == 'Nuevo':
+            vals['name'] = self.env['ir.sequence'].next_by_code('fuel.control') or '/'
+        return super(FuelControl, self).create(vals)
 
-    @api.onchange('date_from', 'date_to')
-    def _onchange_dates(self):
-        if self.date_from and self.date_to:
-            return {
-                        'type': 'ir.actions.act_window',
-                        'name': 'Ver Transacciones',
-                        'res_model': 'fuel.control',
-                        'view_mode': 'tree',
-                        'view_id': self.env.ref('fuel_control.view_fuel_control_tree').id,
-                        'domain': [('date', '>=', self.date_from), ('date', '<=', self.date_to)],
-                        'context': self.env.context,
-                    }
-    
     @api.model
     def default_get(self, fields):
         res = super(FuelControl, self).default_get(fields)

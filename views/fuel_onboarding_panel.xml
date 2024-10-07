@@ -1,13 +1,13 @@
 <!-- views/fuel_onboarding_panel.xml -->
 <odoo>
     <template id="fuel_onboarding_panel">
-            <div class="o_onboarding_panel">
-                <div class="o_onboarding_panel_step" style="display: flex; align-items: left; justify-content: center; width: 20%; margin: 10px, 20px;">
+            <div class="o_onboarding_panel" style="width: 25%; margin: 10px 20px;">
+                <div class="o_onboarding_panel_step" style="display: flex; align-items: center; justify-content: center;">
                     <label for="date_from" style="margin-right: 10px;">Desde:</label>
                     <input type="date" id="date_from" name="date_from" class="form-control" style="margin-right: 20px;"/>
 
-                    <label for="date_to" style="margin-right: 10px; width: 100px">Hasta:</label>
-                    <input type="date" id="date_to" name="date_to" class="form-control" style="margin-right: 20px; width: 100px"/>
+                    <label for="date_to" style="margin-right: 10px;">Hasta:</label>
+                    <input type="date" id="date_to" name="date_to" class="form-control" style="margin-right: 20px;"/>
                     <a type="button" class="btn btn-primary" href="/web#action=fuel_control.action_fuel_control_tree">
                             Aplicar
                     </a>

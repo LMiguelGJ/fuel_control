@@ -16,7 +16,8 @@
                         <field name="moment" widget="date" placeholder="Ingrese fecha" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"/>
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <h3 style="display: block; margin-bottom: 5px;">Cantidad:</h3>
+                        <h3 style="display: block; margin-bottom: 5px;">Cantidad: <small>(en galones)</small>
+                        </h3>
                         <field name="quantity" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" widget="label" placeholder="Ingrese cantidad"/>
                     </div>
                     <footer style="text-align: center; margin-top: 20px;">
@@ -38,6 +39,7 @@
                     <div class="d-flex justify-content-center flex-column align-items-center mt-4 ">
                         <h1 class="display-1" style="margin-bottom: 35px;">Control de Combustible</h1>
                         <div style="width: 35%; margin-bottom: 35px;">
+                            <field name="id" attrs="{'invisible': True}"/>
                             <field name="date" attrs="{'invisible': True}"/>
                             <field name="received_by" attrs="{'invisible': True}"/>
                             <field name="quantity_in" attrs="{'invisible': True}"/>
@@ -52,7 +54,7 @@
 
                         <div style="width: 70%; ">
                             <div class="d-grid gap-2 col-6 mx-auto">
-                                <button name="action_open_wizard_in" string="Depositar Combustible" type="object" class="btn btn-primary fs-2  mb-4 py-3"/>
+                                <button name="action_open_wizard_in" string="Depositar Combustible" type="object" class="btn btn-primary fs-2  mb-4 py-3  text-capitalize"/>
                                 <button name="action_open_wizard_out" string="Retirar Combustible" type="object" class="btn btn-danger fs-2 py-3" />
                             </div>
                         </div>
@@ -69,11 +71,11 @@
         <field name="model">fuel.control</field>
         <field name="arch" type="xml">
             <tree string="Ver Transacciones" create="false" edit="false">
+                <field name="id" attrs="{'invisible': True}"/>
                 <field name="date" widget="date" readonly="0"/>
                 <field name="received_by" readonly="0"/>
                 <field name="quantity_in" readonly="0" sum="Total entradas"/>
                 <field name="quantity_out" readonly="0" sum="Total salidas"/>
-                <field name="total" readonly="0"/>
             </tree>
         </field>
     </record>
@@ -90,6 +92,17 @@
             </xpath>
         </field>
     </record>
+
+
+    <record id="seq_fuel_control" model="ir.sequence">
+        <field name="name">Control de Combustible</field>
+        <field name="code">fuel.control</field>
+        <field name="prefix">FC</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+
 
 
     <record id="action_fuel_control" model="ir.actions.act_window">
