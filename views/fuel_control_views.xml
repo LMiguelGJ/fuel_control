@@ -44,6 +44,8 @@
                             <field name="received_by" attrs="{'invisible': True}"/>
                             <field name="quantity_in" attrs="{'invisible': True}"/>
                             <field name="quantity_out" attrs="{'invisible': True}"/>
+                            <field name="date_to" attrs="{'invisible': True}"/>
+                            <field name="date_from" attrs="{'invisible': True}"/>
 
                             <div class="d-flex justify-content-center flex-row align-items-center gap-2">
                                 <h1 class="h1 fs-1">Total:</h1>
@@ -73,6 +75,8 @@
             <tree string="Ver Transacciones" create="false" edit="false">
                 <field name="id" attrs="{'invisible': True}"/>
                 <field name="date" widget="date" readonly="0"/>
+                <field name="date_to" attrs="{'invisible': True}"/>
+                <field name="date_from" attrs="{'invisible': True}"/>
                 <field name="received_by" readonly="0"/>
                 <field name="quantity_in" readonly="0" sum="Total entradas"/>
                 <field name="quantity_out" readonly="0" sum="Total salidas"/>
@@ -102,8 +106,17 @@
         <field name="number_increment">1</field>
     </record>
 
-
-
+    <record id="fuel_control_search_view" model="ir.ui.view">
+        <field name="name">fuel.control.search</field>
+        <field name="model">fuel.control</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date_to" attrs="{'invisible': True}"/>
+                <field name="date_from" attrs="{'invisible': True}"/>   
+                <filter string="Fecha" name="date_filter" domain="[('date', '&gt;=', date_from), ('date', '&lt;=', date_to)]"/>
+            </search>
+        </field>
+    </record>
 
     <record id="action_fuel_control" model="ir.actions.act_window">
         <field name="name">Nueva Transacción</field>
@@ -115,10 +128,10 @@
 
     <record id="action_fuel_control_tree" model="ir.actions.act_window">
         <field name="name">Ver Transacciones</field>
-        <field name="view_id" ref="view_fuel_control_tree"/>
         <field name="res_model">fuel.control</field>
         <field name="view_mode">tree</field>
-        <field name="target">current</field>
+        <field name="view_id" ref="view_fuel_control_tree"/>
+        <field name="search_view_id" ref="fuel_control_search_view"/>
     </record>
 
     <menuitem id="menu_fuel_control_main" name="Gestión de Combustible" sequence="1" web_icon="fuel_control,static/description/icon.png"/>

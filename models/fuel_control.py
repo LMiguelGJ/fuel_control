@@ -2,6 +2,8 @@
 
 # models/fuel_control.py
 from odoo import models, fields, api
+from datetime import date, timedelta
+
 
 class FuelControl(models.Model):
     _name = 'fuel.control'
@@ -10,6 +12,10 @@ class FuelControl(models.Model):
 
     date = fields.Date(string='Fecha')
     
+    date_to = fields.Date(string='Fecha', default=lambda self: date.today())
+    
+    date_from = fields.Date(string='Fecha', default=lambda self: date.today() - timedelta(days=7))
+  
     name = fields.Char(string='Referencia', required=True, copy=False, readonly=True, default='Nuevo')
 
     received_by = fields.Char(string="Recibido por")
