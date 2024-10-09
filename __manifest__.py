@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Fuel Control',
-    'version': '1.0',
+    'version': '3.0',
     'category': 'Inventory',
     'summary': 'Gestión del inventario de combustible',
     'description': 'Modulo para gestionar el inventario de combustible de la empresa.',

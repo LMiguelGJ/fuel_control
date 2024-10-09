@@ -2,7 +2,6 @@
 
 # models/fuel_control.py
 from odoo import models, fields, api
-from datetime import date, timedelta
 
 
 class FuelControl(models.Model):
@@ -11,10 +10,6 @@ class FuelControl(models.Model):
     _order = 'date desc'
 
     date = fields.Date(string='Fecha')
-    
-    date_to = fields.Date(string='Fecha', default=lambda self: date.today())
-    
-    date_from = fields.Date(string='Fecha', default=lambda self: date.today() - timedelta(days=7))
   
     name = fields.Char(string='Referencia', required=True, copy=False, readonly=True, default='Nuevo')
 
@@ -26,6 +21,36 @@ class FuelControl(models.Model):
     
     total = fields.Float(string='Total Actual',
                          compute='_compute_total', store=True)
+    
+    @api.model
+    def action_open_fuel_control(self):
+        action = self.env.ref('fuel_control.action_fuel_control_tree').read()[0]
+        
+        # Obtener las fechas de los parámetros del sistema
+        fecha_inicio = self.env['ir.config_parameter'].get_param('fuel.control.fecha_inicio')
+        fecha_fin = self.env['ir.config_parameter'].get_param('fuel.control.fecha_fin')
+        
+        # Validar que las fechas no estén vacías
+        if fecha_inicio and fecha_fin:
+            action['domain'] = [('date', '>', fecha_inicio), ('date', '<', fecha_fin)]
+        else:
+            action['domain'] = []
+
+        return action
+    
+    @api.model
+    def set_fechas(self, fecha_inicio, fecha_fin):
+        # Guardar las fechas en los parámetros del sistema
+        params_to_delete = self.env['ir.config_parameter'].search([
+            ('key', 'in', ['fuel.control.fecha_inicio', 'fuel.control.fecha_fin'])
+        ])
+        
+        if params_to_delete:
+            params_to_delete.unlink()
+
+        self.env['ir.config_parameter'].set_param('fuel.control.fecha_inicio', fecha_inicio)
+        self.env['ir.config_parameter'].set_param('fuel.control.fecha_fin', fecha_fin)
+
     
     @api.model
     def create(self, vals):

@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request
 import json
+from odoo.exceptions import UserError 
 
 class FuelOnboardingController(http.Controller):
     @http.route('/fuel_control/fuel_onboarding_panel', auth='user', type='json')
@@ -22,11 +23,11 @@ class FuelOnboardingController(http.Controller):
         if not date_from or not date_to:
             return request.redirect('/web#action=fuel_control.action_fuel_control_tree&error=Fechas no pueden estar vacías')
         
-        domain = [('date', '&gt;=', date_from), ('date', '&lt;=', date_to)]
-
-        # Serializar el dominio como JSON para que sea correctamente codificado en la URL
-        domain_json = json.dumps(domain)
+        try:
+            request.env['fuel.control'].set_fechas(date_from, date_to)
+        except Exception as e:
+            raise UserError(f"Error al guardar las fechas: {str(e)}")
 
         # Redirigir a la acción predefinida con el dominio aplicado y codificado
-        return request.redirect(f'/web#action=fuel_control.action_fuel_control_tree&view_type=tree&domain={domain_json}')
+        return request.redirect(f'/web#action=fuel_control.action_open_fuel_control')
         
