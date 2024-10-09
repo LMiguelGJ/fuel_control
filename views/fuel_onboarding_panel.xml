@@ -13,8 +13,8 @@
                     <button type="submit" class="btn btn-primary">
                         Aplicar
                     </button>
-                    <a  t-attf-href="/web#action=fuel_control.action_open_fuel_control" class="btn btn-secondary ms-3">
-                    Ver Transacciones
+                    <a  t-attf-href="/web#action=fuel_control.action_fuel_control_tree" class="btn btn-secondary ms-3">
+                        Limpiar
                     </a>
                 </form>
             </div>
