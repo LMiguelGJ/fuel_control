@@ -74,16 +74,21 @@ class FuelControl(models.Model):
             if vals.get('name', 'Nuevo') == 'Nuevo':
                 vals['name'] = self.env['ir.sequence'].next_by_code('fuel.control') or '/'
         return super().create(vals_list)
-
+    
+    
     @api.model
-    def default_get(self, fields_list):
-        res = super(FuelControl, self).default_get(fields_list)
-        self.remove_empty_date_records_and_return_action()
-        return res
-
     def remove_empty_date_records_and_return_action(self):
         records_to_delete = self.search([('date', '=', False)])
-        records_to_delete.unlink()
+        if records_to_delete:
+            records_to_delete.unlink()
+        # Retorna la acción para abrir la vista tree
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Fuel Control Tree View',
+            'view_mode': 'tree',
+            'res_model': 'fuel.control',
+            'target': 'current',
+        }
     
     @api.depends('quantity_in', 'quantity_out')
     def _compute_total(self):

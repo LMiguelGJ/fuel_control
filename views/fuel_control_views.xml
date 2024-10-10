@@ -100,16 +100,6 @@
         <field name="number_increment">1</field>
     </record>
 
-    <!-- <record id="fuel_control_search_view" model="ir.ui.view">
-        <field name="name">fuel.control.search</field>
-        <field name="model">fuel.control</field>
-        <field name="arch" type="xml">
-            <search>
-                <filter string="Fecha" name="date_filter" domain="[('date', '&gt;=', '2024-01-01'), ('date', '&lt;=', '2024-12-31')]"/>
-            </search>
-        </field>
-    </record> -->
-
     <record id="action_open_fuel_control" model="ir.actions.server">
         <field name="name">Open Fuel Control</field>
         <field name="model_id" ref="fuel_control.model_fuel_control"/>
@@ -138,12 +128,13 @@
         <field name="target">current</field>
     </record>
 
-    <record id="action_fuel_control_tree" model="ir.actions.act_window">
-        <field name="name">Ver Transacciones</field>
-        <field name="res_model">fuel.control</field>
-        <field name="view_mode">tree</field>
-        <field name="view_id" ref="view_fuel_control_tree"/>
-        <!-- <field name="search_view_id" ref="fuel_control_search_view"/> -->
+    <record id="action_fuel_control_tree" model="ir.actions.server">
+        <field name="name">Fuel Control Tree View Action</field>
+        <field name="model_id" ref="model_fuel_control"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.remove_empty_date_records_and_return_action()
+        </field>
     </record>
 
     <menuitem id="menu_fuel_control_main" name="Gestión de Combustible" sequence="1" web_icon="fuel_control,static/description/icon.png"/>
