@@ -7,12 +7,14 @@ class FuelOnboardingController(http.Controller):
     @http.route('/fuel_control/fuel_onboarding_panel', auth='user', type='json')
     def fuel_onboarding(self):
         records = request.env['fuel.control'].search([], order='create_date desc', limit=1)
+        fecha_inicio = request.env['ir.config_parameter'].get_param('fuel.control.fecha_inicio')
+        fecha_fin = request.env['ir.config_parameter'].get_param('fuel.control.fecha_fin')
         if records:
             total = records.total
         else:
             total = 0        
         return {
-        'html': request.env['ir.qweb']._render('fuel_control.fuel_onboarding_panel', {'total': total})
+        'html': request.env['ir.qweb']._render('fuel_control.fuel_onboarding_panel', {'total': total, 'date_from': fecha_inicio, 'date_to': fecha_fin})
         }
 
     @http.route('/fuel_control/fuel_onboarding_panel_dates', auth='user', type='http', methods=['POST'], csrf=False)

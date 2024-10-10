@@ -32,7 +32,7 @@ class FuelControl(models.Model):
         
         # Validar que las fechas no estén vacías
         if fecha_inicio and fecha_fin:
-            action['domain'] = [('date', '>', fecha_inicio), ('date', '<', fecha_fin)]
+            action['domain'] = [('date', '>=', fecha_inicio), ('date', '<=', fecha_fin)]
         else:
             action['domain'] = []
 
@@ -51,16 +51,33 @@ class FuelControl(models.Model):
         self.env['ir.config_parameter'].set_param('fuel.control.fecha_inicio', fecha_inicio)
         self.env['ir.config_parameter'].set_param('fuel.control.fecha_fin', fecha_fin)
 
+    @api.model
+    def delete_fechas(self):
+        action = self.env.ref('fuel_control.action_fuel_control_tree').read()[0]
+
+        # Guardar las fechas en los parámetros del sistema
+        params_to_delete = self.env['ir.config_parameter'].search([
+            ('key', 'in', ['fuel.control.fecha_inicio', 'fuel.control.fecha_fin'])
+        ])
+        
+        if params_to_delete:
+            params_to_delete.unlink()
+        
+        return action
+
     
     @api.model
-    def create(self, vals):
-        if vals.get('name', 'Nuevo') == 'Nuevo':
-            vals['name'] = self.env['ir.sequence'].next_by_code('fuel.control') or '/'
-        return super(FuelControl, self).create(vals)
+    def create(self, vals_list):
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+        for vals in vals_list:
+            if vals.get('name', 'Nuevo') == 'Nuevo':
+                vals['name'] = self.env['ir.sequence'].next_by_code('fuel.control') or '/'
+        return super().create(vals_list)
 
     @api.model
-    def default_get(self, fields):
-        res = super(FuelControl, self).default_get(fields)
+    def default_get(self, fields_list):
+        res = super(FuelControl, self).default_get(fields_list)
         self.remove_empty_date_records_and_return_action()
         return res
 

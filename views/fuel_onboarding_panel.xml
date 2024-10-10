@@ -4,17 +4,18 @@
         <div class="o_onboarding_panel" style="display: flex; align-items: center; justify-content: space-between; width: 96%; margin: 0px 2%;">
             <div class="o_onboarding_panel_step d-flex align-items-center">
                 <form action="/fuel_control/fuel_onboarding_panel_dates" method="post" class="d-flex align-items-center">
-                    <label for="date_from" class="me-2">Desde:</label>
-                    <input type="date" id="date_from" name="date_from" class="form-control me-4"/>
 
+                    <label for="date_from" class="me-2">Desde:</label>
+                    <input type="date" widget="date" placeholder="Ingrese fecha" id="date_from" name="date_from" class="o_datepicker_input o_input form-control me-4 border rounded p-2"  t-att-value="date_from"/>
+                   
                     <label for="date_to" class="me-2">Hasta:</label>
-                    <input type="date" id="date_to" name="date_to" class="form-control me-4"/>
+                    <input type="date" widget="date" placeholder="Ingrese fecha" id="date_to" name="date_to" class="o_datepicker_input o_input form-control me-4 border rounded p-2" t-att-value="date_to"/>
 
                     <button type="submit" class="btn btn-primary">
                         Aplicar
                     </button>
-                    <a  t-attf-href="/web#action=fuel_control.action_fuel_control_tree" class="btn btn-secondary ms-3">
-                        Limpiar
+                    <a  t-attf-href="/web#action=fuel_control.action_delete_fechas_fuel_control" class="btn  btn-outline-dark ms-3 text-nowrap">
+                        BORRAR FILTRO
                     </a>
                 </form>
             </div>
