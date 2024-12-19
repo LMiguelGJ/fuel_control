@@ -39,7 +39,7 @@ class FuelWizard(models.TransientModel):
         # Validación de los campos
         if not self.moment:
             raise UserError("Por favor, complete el campo 'Fecha' antes de continuar.")
-        if not self.received:
+        if 'action' in self._context and self._context['action'] == 'out':
             raise UserError("Por favor, complete el campo 'Recibido por' antes de continuar.")
         if not self.quantity:
             raise UserError("Por favor, complete el campo 'Cantidad' antes de continuar.")
@@ -57,6 +57,8 @@ class FuelWizard(models.TransientModel):
             
         # Actualizar el total
         fuel_control._compute_total()
+        # fuel_control.customLogs(self.received, self.moment, self.quantity)
+
         
         return {
             'type': 'ir.actions.act_window',
