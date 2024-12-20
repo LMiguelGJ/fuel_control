@@ -40,7 +40,8 @@ class FuelWizard(models.TransientModel):
         if not self.moment:
             raise UserError("Por favor, complete el campo 'Fecha' antes de continuar.")
         if 'action' in self._context and self._context['action'] == 'out':
-            raise UserError("Por favor, complete el campo 'Recibido por' antes de continuar.")
+            if not self.received:
+                raise UserError("Por favor, complete el campo 'Recibido por' antes de continuar.")
         if not self.quantity:
             raise UserError("Por favor, complete el campo 'Cantidad' antes de continuar.")
 

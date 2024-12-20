@@ -86,8 +86,11 @@
         <!-- Ajusta según el ID de la vista original -->
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="banner_route">/fuel_control/fuel_onboarding_panel</attribute>
+                <attribute name="js_class">fuel_control_list_view</attribute>
             </xpath>
+            <!-- <xpath expr="//tree" position="attributes">
+                <attribute name="banner_route">/fuel_control/fuel_onboarding_panel</attribute>
+            </xpath> -->
         </field>
     </record>
 

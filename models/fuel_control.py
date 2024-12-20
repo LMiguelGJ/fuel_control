@@ -84,7 +84,7 @@ class FuelControl(models.Model):
         # Retorna la acción para abrir la vista tree
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Fuel Control Tree View',
+            'name': 'Ver Transacciones',
             'view_mode': 'tree',
             'res_model': 'fuel.control',
             'target': 'current',

@@ -10,10 +10,14 @@
     'depends': ['base', 'web'],
     'data': [
         'views/fuel_control_views.xml',
-        'views/fuel_onboarding_panel.xml',
         'security/ir.model.access.csv'
 
     ],
+    'assets': {
+        'web.assets_backend': [
+            'fuel_control/static/src/components/*'
+        ]
+    },
     'installable': True,
     'application': True,
 }
